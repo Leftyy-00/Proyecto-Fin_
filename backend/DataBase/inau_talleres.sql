@@ -155,6 +155,11 @@ CREATE TABLE asistencias (
  
 -- Detalle: estado de cada alumno dentro de una jornada.
 --
+-- usuario_registro identifica a quien cargó o modificó por última vez este
+-- registro en particular (NRF10). Se ubica en el detalle y no en la jornada
+-- porque un tallerista puede corregir el estado de un alumno concreto con
+-- posterioridad a la carga inicial.
+--
 -- NOTA: la última asistencia de un alumno no se almacena como columna
 -- en la tabla alumnos, sino que se obtiene consultando esta tabla:
 --   SELECT MAX(a.fecha) FROM registros_asistencia r
@@ -163,14 +168,16 @@ CREATE TABLE asistencias (
 -- Se evita así almacenar un dato derivado que exigiría mantenerse
 -- sincronizado en cada registro de asistencia.
 CREATE TABLE registros_asistencia (
-    id             INT AUTO_INCREMENT PRIMARY KEY,
-    asistencia_id  INT NOT NULL,
-    alumno_id      INT NOT NULL,
-    estado         ENUM('Presente', 'Ausente', 'Justificado', 'Tardanza') NOT NULL,
-    observaciones  TEXT,
- 
-    FOREIGN KEY (asistencia_id) REFERENCES asistencias(id) ON DELETE CASCADE,
-    FOREIGN KEY (alumno_id)     REFERENCES alumnos(id)     ON DELETE CASCADE,
+    id                INT AUTO_INCREMENT PRIMARY KEY,
+    asistencia_id     INT NOT NULL,
+    alumno_id         INT NOT NULL,
+    usuario_registro  INT NOT NULL,
+    estado            ENUM('Presente', 'Ausente', 'Justificado', 'Tardanza') NOT NULL,
+    observaciones     TEXT,
+
+    FOREIGN KEY (asistencia_id)    REFERENCES asistencias(id) ON DELETE CASCADE,
+    FOREIGN KEY (alumno_id)        REFERENCES alumnos(id)     ON DELETE CASCADE,
+    FOREIGN KEY (usuario_registro) REFERENCES usuarios(id),
     UNIQUE (asistencia_id, alumno_id)
 );
  
@@ -350,9 +357,10 @@ INSERT INTO adjuntos (contenido_id, entrega_id, nombre_original, nombre_archivo,
 INSERT INTO asistencias (taller_id, fecha) VALUES
 (1, '2026-08-14');
  
-INSERT INTO registros_asistencia (asistencia_id, alumno_id, estado, observaciones) VALUES
-(1, 1, 'Presente',    NULL),
-(1, 2, 'Ausente',     NULL);
+-- El tallerista 3 (Martín Rodríguez) es quien cargó esta jornada
+INSERT INTO registros_asistencia (asistencia_id, alumno_id, usuario_registro, estado, observaciones) VALUES
+(1, 1, 3, 'Presente',    NULL),
+(1, 2, 3, 'Ausente',     NULL);
  
  
 -- Trazabilidad de ejemplo
@@ -360,3 +368,4 @@ INSERT INTO trazabilidad (usuario_id, accion, entidad, entidad_id, fecha, detall
 (3, 'crear',  'contenido', 2, '2026-08-03 09:30:00', '{"titulo": "Primera página web", "tipo": "Tarea"}'),
 (3, 'editar', 'entrega',   1, '2026-08-16 08:12:00', '{"campo": "nota", "valor_anterior": null, "valor_nuevo": 9}'),
 (1, 'crear',  'alumno',    3, '2026-08-20 11:05:00', '{"nombre": "Valentina Gómez"}');
+ 
