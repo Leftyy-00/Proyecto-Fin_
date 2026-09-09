@@ -360,4 +360,3 @@ INSERT INTO trazabilidad (usuario_id, accion, entidad, entidad_id, fecha, detall
 (3, 'crear',  'contenido', 2, '2026-08-03 09:30:00', '{"titulo": "Primera página web", "tipo": "Tarea"}'),
 (3, 'editar', 'entrega',   1, '2026-08-16 08:12:00', '{"campo": "nota", "valor_anterior": null, "valor_nuevo": 9}'),
 (1, 'crear',  'alumno',    3, '2026-08-20 11:05:00', '{"nombre": "Valentina Gómez"}');
- 
