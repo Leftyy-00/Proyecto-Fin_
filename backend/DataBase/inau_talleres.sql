@@ -346,11 +346,13 @@ INSERT INTO entregas (contenido_id, alumno_id, fecha_entrega, estado, nota, come
 (2, 2, '2026-08-16', 'Entregada', NULL, NULL);
  
  
--- Adjuntos: uno del material publicado y uno por cada entrega de alumno
+-- Adjuntos: uno del material publicado y uno por cada entrega de alumno.
+-- Los formatos utilizados corresponden a los permitidos por NRF11:
+-- PDF, imágenes JPG y documentos de oficina.
 INSERT INTO adjuntos (contenido_id, entrega_id, nombre_original, nombre_archivo, ruta, tipo_mime, tamano_bytes, fecha_subida) VALUES
-(1,    NULL, 'guia-html.pdf',     'a1f4c8e2b93d47.pdf',  '/uploads/contenidos/', 'application/pdf', 482310, '2026-08-01 10:15:00'),
-(NULL, 1,    'pagina-sofia.html', '7d2b9f0ac41e58.html', '/uploads/entregas/',   'text/html',        12480, '2026-08-15 19:42:00'),
-(NULL, 2,    'pagina-mateo.html', 'c39e5a71bd8062.html', '/uploads/entregas/',   'text/html',        10920, '2026-08-16 21:07:00');
+(1,    NULL, 'guia-html.pdf',      'a1f4c8e2b93d47.pdf',  '/uploads/contenidos/', 'application/pdf',                                                           482310, '2026-08-01 10:15:00'),
+(NULL, 1,    'entrega-sofia.pdf',  '7d2b9f0ac41e58.pdf',  '/uploads/entregas/',   'application/pdf',                                                            98450, '2026-08-15 19:42:00'),
+(NULL, 2,    'entrega-mateo.docx', 'c39e5a71bd8062.docx', '/uploads/entregas/',   'application/vnd.openxmlformats-officedocument.wordprocessingml.document',   134200, '2026-08-16 21:07:00'); 
  
  
 -- Registro de asistencia de una jornada del taller 1
